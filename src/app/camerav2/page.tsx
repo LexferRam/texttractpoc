@@ -55,7 +55,7 @@ const IDCardScanner = () => {
       
       // Buscar objetos que podrían ser una cédula (wallet, book, etc.)
       const idLikeObjects = predictions.filter((pred: any) => 
-        ['book'].includes(pred.class)
+        ['book', 'wallet', 'card'].includes(pred.class)
       );
 
       console.log('idLikeObjects', idLikeObjects)
