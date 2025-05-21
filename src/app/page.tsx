@@ -193,7 +193,8 @@ export default function Home() {
             />
           </Button>
 
-        {isMobileDevice && <Tooltip title="Acceder a la camara">
+        {/* {isMobileDevice &&  */}
+        <Tooltip title="Acceder a la camara">
           <IconButton color="success" onClick={async() => {
             setShowCameraPreview(true)
             await navigator.mediaDevices.getUserMedia({
@@ -204,7 +205,8 @@ export default function Home() {
           }}>
             <LocalSeeIcon fontSize="medium" />
           </IconButton>
-        </Tooltip>}
+        </Tooltip>
+        {/* } */}
 
         {image ? (
           <div>
@@ -267,10 +269,10 @@ export default function Home() {
               {/* Guía para la posición de la cabeza */}
               <div style={{
                 position: 'absolute',
-                top: '5%',
-                left: '10%',
-                height: '15%',
-                width: '17%',
+                top: '15%',
+                right: '11%',
+                height: '10%',
+                width: '15%',
                 border: '2px dashed rgba(255, 255, 255, 0.5)',
                 backgroundColor: 'rgba(0, 0, 0, 0.1)',
                 borderRadius: '50%'
@@ -279,9 +281,9 @@ export default function Home() {
               {/* Guía para los hombros */}
               <div style={{
                 position: 'absolute',
-                top: '22%',
-                left: '18%',
-                transform: 'translateX(-50%)',
+                top: '27%',
+                right: '4%',
+                // transform: 'translateX(-50%)',
                 width: '30%',
                 height: '10%',
                 border: '2px dashed rgba(255, 255, 255, 0.5)',
