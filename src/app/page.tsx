@@ -34,6 +34,7 @@ const VisuallyHiddenInput = styled('input')({
 export default function Home() {
   const camera = useRef(null) as any;
   const fileInputRef = useRef(null) as any;
+  const scannedImageRef = useRef(null) as any;
 
   const [image, setImage] = useState<any>(null);
   const [loading, setLoading] = useState(false)
@@ -77,6 +78,28 @@ export default function Home() {
 
         <VisuallyHiddenInput
           ref={fileInputRef}
+          type="file"
+          capture={isMobileDevice ? 'environment' : undefined}
+          onChange={(e) => {
+            setShowCameraPreview(false)
+            setResult(null)
+            handleImageChange(e.target.files ? e.target.files[0] : null)
+          }}
+          multiple
+        />
+
+        <Tooltip title="Escanear Documento">
+          <IconButton
+            onClick={() => scannedImageRef.current.click()}
+            aria-label="delete"
+            style={{ color: '#46c0b7' }}
+          >
+            <CloudUploadIcon />
+          </IconButton>
+        </Tooltip>
+
+        <VisuallyHiddenInput
+          ref={scannedImageRef}
           type="file"
           capture={isMobileDevice ? 'environment' : undefined}
           onChange={(e) => {
