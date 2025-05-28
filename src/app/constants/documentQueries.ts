@@ -9,7 +9,7 @@ export const venezuelanIdQueries: Query[] = [
   },
   {
     // Query
-    Text: "NOMBRES", // required
+    Text: "get the name (of the ID) beside the word 'NOMBRES'", // required
     Alias: "Nombres",
   },
   {
@@ -19,29 +19,33 @@ export const venezuelanIdQueries: Query[] = [
   },
   {
     // Query
-    Text: "Director", // required
-    Alias: "Director",
-  },
-  {
-    // Query
     Text: "What is the date of birth?", // required
     Alias: "F de nacimiento",
-  },
-  {
-    // Query
-    Text: "What is the first date in F EXPEDICION?", // required
-    Alias: "F de expedicion",
   },
   {
     // Query
     Text: "What is the last date?", // required
     Alias: "F de vencimiento",
   },
-  {
-    // Query
-    Text: "What is the edo civil?", // required
-    Alias: "Edo civil",
-  },
+  // {
+  //   // Query
+  //   Text: "Director", // required
+  //   Alias: "Director",
+  // },
+  // {
+  //   // Query
+  //   Text: "What is the first date in F EXPEDICION?", // required
+  //   Alias: "F de expedicion",
+  // },
+  // {
+  //   // Query
+  //   Text: "What is the edo civil?", // required
+  //   Alias: "Edo civil",
+  // },
+  // {
+  //   Text: "Get the line bellow the text 'REPUBLICA BOLIVARIANA DE VENEZUELA'", // required
+  //   Alias: "CI",
+  // }
 ];
 
 export const venezuelanCirculationCertificateQueries: Query[] = [
