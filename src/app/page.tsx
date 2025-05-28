@@ -78,6 +78,7 @@ export default function Home() {
         <VisuallyHiddenInput
           ref={fileInputRef}
           type="file"
+          capture={isMobileDevice ? 'environment' : undefined}
           onChange={(e) => {
             setShowCameraPreview(false)
             setResult(null)
