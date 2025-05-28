@@ -18,6 +18,7 @@ import ScannedImagePreview from "./_components/ScannedImagePreview";
 import TakePictureButton from "./_components/TakePictureButton";
 import { useMobileDevices } from "./hooks/useMobileDevices";
 import useTextractAnalizedImage from "./hooks/useTextractAnalizedImage";
+import SimpleBackdrop from "./_components/BackDrop";
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -60,6 +61,7 @@ export default function Home() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', padding: '20px' }}>
+      <SimpleBackdrop open={loading} />
       <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
 
         <p style={{ color: 'gray'}}>
