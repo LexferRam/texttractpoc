@@ -79,7 +79,7 @@ export default function Home() {
         <VisuallyHiddenInput
           ref={fileInputRef}
           type="file"
-          capture={isMobileDevice ? 'environment' : undefined}
+          accept="image/jpeg, image/png"
           onChange={(e) => {
             setShowCameraPreview(false)
             setResult(null)
@@ -101,6 +101,7 @@ export default function Home() {
         <VisuallyHiddenInput
           ref={scannedImageRef}
           type="file"
+          accept="image/jpeg, image/png"
           capture={isMobileDevice ? 'environment' : undefined}
           onChange={(e) => {
             setShowCameraPreview(false)
