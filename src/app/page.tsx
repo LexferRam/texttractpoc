@@ -94,7 +94,7 @@ export default function Home() {
             aria-label="delete"
             style={{ color: '#46c0b7' }}
           >
-            <CloudUploadIcon />
+            <LocalSeeIcon />
           </IconButton>
         </Tooltip>
 
