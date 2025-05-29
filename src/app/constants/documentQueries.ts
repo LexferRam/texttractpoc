@@ -49,11 +49,20 @@ export const venezuelanIdQueries: Query[] = [
 ];
 
 export const venezuelanCirculationCertificateQueries: Query[] = [
-  // Queries // required
   {
     // Query
-    Text: "Which the id number?", // required
-    Alias: "Serial de motor",
+    Text: "what is the year or date?", // required
+    Alias: "Anio del vehiculo",
+  },
+  {
+    // Query
+    Text: "what is the Vehicle make?", // required
+    Alias: "Marca del vehiculo",
+  },
+  {
+    // Query
+    Text: "which the vehicle properties?", // required 
+    Alias: "Modelo del vehiculo",
   },
   {
     // Query
@@ -62,49 +71,19 @@ export const venezuelanCirculationCertificateQueries: Query[] = [
   },
   {
     // Query
-    Text: "What is the name?", // required
-    Alias: "Nombre completo",
+    Text: "Which the id number?", // required
+    Alias: "Serial de motor",
   },
   {
     // Query
-    Text: "What is the venezuelan id?", // required
-    Alias: "Cedula",
-  },
-  {
-    // Query
-    Text: "which the vehicle properties?", // required
-    Alias: "Propiedades del vehiculo",
-  },
-  {
-    // Query
-    Text: "what is the year or date?", // required
-    Alias: "Edad del vehiculo",
-  },
-  {
-    // Query
-    Text: "Serial N.I.V.", // required
+    Text: "get the word that is located to the right of the word 'N.I.V.'", // required
     Alias: "Serial de carroceria",
   },
   {
     // Query
-    Text: "what is the weight?", // required
-    Alias: "Peso",
-  },
-  {
-    // Query
-    Text: "number of ejes", // required
-    Alias: "Cantidad de ejes",
-  },
-  {
-    // Query
-    Text: "letters next to the word ejes", // required
+    Text: "get the word that is printed to the right of the word EJES", // required
     Alias: "Color del vehiculo",
-  },
-  {
-    // Query
-    Text: "number of ptos", // required
-    Alias: "Cantidad de puestos",
-  },
+  }
 ];
 
 export const InvoiceQueries: Query[] = [

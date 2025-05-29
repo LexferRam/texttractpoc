@@ -28,75 +28,83 @@ const useTextractAnalizedImage = ({
     };
 
     const analizeImage = async (file: any, docType: string) => {
-        setLoading(true)
+        try {
+            setLoading(true)
 
-        const command = new AnalyzeDocumentCommand({
-            // AnalyzeDocumentRequest
-            Document: {
-                // Document
-                Bytes: file
-                    ? new Uint8Array(file)
-                    : undefined, // e.g. Buffer.from("") or new TextEncoder().encode("")
-            },
-            FeatureTypes: [
-                // FeatureTypes // required
-                "QUERIES",
-            ],
-            QueriesConfig: {
-                // QueriesConfig
-                Queries: getDocumentQueries(docType),
-            },
-        });
-        const response: AnalyzeDocumentCommandOutput = await client.send(command);
-
-        console.log(response)
-
-        if (response) {
-            const data: any = [];
-            const blocks = response.Blocks;
-            const lines = blocks?.filter((line) => line.BlockType === "LINE") ?? [];
-
-            const cedIndex = lines?.findIndex((line) => {
-                if (line?.Text) {
-                    return isVenezuelanIdCard(line.Text);
-                }
+            const command = new AnalyzeDocumentCommand({
+                // AnalyzeDocumentRequest
+                Document: {
+                    // Document
+                    Bytes: file
+                        ? new Uint8Array(file)
+                        : undefined, // e.g. Buffer.from("") or new TextEncoder().encode("")
+                },
+                FeatureTypes: [
+                    // FeatureTypes // required
+                    "QUERIES",
+                ],
+                QueriesConfig: {
+                    // QueriesConfig
+                    Queries: getDocumentQueries(docType),
+                },
             });
+            const response: AnalyzeDocumentCommandOutput = await client.send(command);
 
-            const queries = blocks
-                ? blocks?.filter((query) => query.BlockType === "QUERY")
-                : null;
-            const queriesResult = blocks
-                ? blocks?.filter((query) => query.BlockType === "QUERY_RESULT")
-                : null;
+            console.log(response)
 
+            if (response) {
+                const data: any = [];
+                const blocks = response.Blocks;
+                const lines = blocks?.filter((line) => line.BlockType === "LINE") ?? [];
 
-            if (queries && queriesResult) {
-                queries?.map((query) => {
-                    let id =
-                        query.Relationships && query.Relationships[0].Ids
-                            ? query?.Relationships[0]?.Ids[0]
-                            : null;
-                    let found = queriesResult?.find((result) => result.Id === id);
-
-                    if (found && query.Query?.Alias && found.Text) {
-                        // generalConfidenceValues.push(found?.Confidence ?? 0);
-                        data.push({
-                            key: query?.Query?.Alias,
-                            value: found?.Text,
-                            confidence: found?.Confidence,
-                        });
+                const cedIndex = lines?.findIndex((line) => {
+                    if (line?.Text) {
+                        return isVenezuelanIdCard(line.Text);
                     }
                 });
-            }
-            setResult(data);
-            setLoading(false)
-            setShowCameraPreview(false)
 
-        } else {
-            console.error('ERROR ANALIZANDO CON TEXTRACT')
+                const queries = blocks
+                    ? blocks?.filter((query) => query.BlockType === "QUERY")
+                    : null;
+                const queriesResult = blocks
+                    ? blocks?.filter((query) => query.BlockType === "QUERY_RESULT")
+                    : null;
+
+
+                if (queries && queriesResult) {
+                    queries?.map((query) => {
+                        let id =
+                            query.Relationships && query.Relationships[0].Ids
+                                ? query?.Relationships[0]?.Ids[0]
+                                : null;
+                        let found = queriesResult?.find((result) => result.Id === id);
+
+                        if (found && query.Query?.Alias && found.Text) {
+                            // generalConfidenceValues.push(found?.Confidence ?? 0);
+                            data.push({
+                                key: query?.Query?.Alias,
+                                value: found?.Text,
+                                confidence: found?.Confidence,
+                            });
+                        }
+                    });
+                }
+                setResult(data);
+                setLoading(false)
+                setShowCameraPreview(false)
+
+            } else {
+                console.error('ERROR ANALIZANDO CON TEXTRACT')
+            }
+        } catch (error) {
+            console.error("Error analizando imagen:", error);
+            setLoading(false);
+            setResult(null);
+            setShowCameraPreview(false);
+
         }
     }
-    
+
     return {
         analizeImage
     }

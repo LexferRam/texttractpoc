@@ -2,14 +2,11 @@
 
 // LIBRARIES - ICONS --------------------
 import { useRef, useState } from "react";
-import Button from '@mui/material/Button';
 import { IconButton, styled, Tooltip } from "@mui/material";
 import { Camera } from "react-camera-pro";
 
 // ICONS ------------------------------
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import DocumentScannerIcon from '@mui/icons-material/DocumentScanner';
-import LocalSeeIcon from '@mui/icons-material/LocalSee';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 
 // COMPONENTS ------------------------------
@@ -95,46 +92,31 @@ const ButtonsActions = ({
 
                 {isMobileDevice && (
                     <>
-                    <Tooltip title="Escanear Documento">
-                    <IconButton
-                        onClick={() => scannedImageRef.current.click()}
-                        aria-label="delete"
-                        style={{ color: '#46c0b7' }}
-                    >
-                        <DocumentScannerIcon />
-                    </IconButton>
-                </Tooltip>
+                        <Tooltip title="Escanear Documento">
+                            <IconButton
+                                onClick={() => scannedImageRef.current.click()}
+                                aria-label="delete"
+                                style={{ color: '#46c0b7' }}
+                            >
+                                <DocumentScannerIcon />
+                            </IconButton>
+                        </Tooltip>
 
-                <VisuallyHiddenInput
-                    ref={scannedImageRef}
-                    type="file"
-                    accept="image/jpeg, image/png"
-                    capture={isMobileDevice ? 'environment' : 'user'}
-                    onChange={(e) => {
-                        setShowCameraPreview(false)
-                        setResult(null)
-                        handleImageChange(e.target.files ? e.target.files[0] : null)
-                    }}
-                    multiple
-                /></>)}
-                {/*}
-                <Tooltip title="Escanear Documento">
-                    <IconButton
-                        style={{ color: '#46c0b7' }}
-                        onClick={async () => {
-                            setShowCameraPreview(true)
-                            await navigator.mediaDevices.getUserMedia({
-                                video: true,
-                                audio: false
-                            });
-                            setHasPermission(true);
-                            setResult(null)
-                            setImage(null)
-                        }}
-                    >
-                        <DocumentScannerIcon fontSize="medium" />
-                    </IconButton>
-                </Tooltip> */}
+                        <VisuallyHiddenInput
+                            ref={scannedImageRef}
+                            type="file"
+                            accept="image/jpeg, image/png"
+                            capture={isMobileDevice ? 'environment' : undefined}
+                            onChange={(e) => {
+                                setShowCameraPreview(false)
+                                setResult(null)
+                                handleImageChange(e.target.files ? e.target.files[0] : null)
+                            }}
+                            multiple
+                        />
+                    </>
+                )}
+
             </div>
 
             <div style={{ width: '100%', maxWidth: '600px', marginBottom: '20px' }}>
