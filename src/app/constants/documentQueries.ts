@@ -76,12 +76,12 @@ export const venezuelanCirculationCertificateQueries: Query[] = [
   },
   {
     // Query
-    Text: "get the word that is located to the right of the word 'N.I.V.'", // required
+    Text: "get the word that is located to the right of the word 'N.I.V.' o NIV", // required
     Alias: "Serial de carroceria",
   },
   {
     // Query
-    Text: "get the word that is printed to the right of the word EJES", // required
+    Text: "Get the color",//"get the word that is printed to the right of the word EJES", // required
     Alias: "Color del vehiculo",
   }
 ];
@@ -182,3 +182,4 @@ export const RifQueries: Query[] = [
     Alias: "Firma autorizada",
   },
 ];
+
