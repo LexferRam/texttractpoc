@@ -27,6 +27,7 @@ const ButtonsActions = ({
     capture = false
 }: any) => {
     const fileInputRef = useRef(null) as any;
+    const scannedImageRef = useRef(null) as any;
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [imagePreviewUrl, setImagePreviewUrl] = useState<string | null>(null);
     const [imageDataForApi, setImageDataForApi] = useState<ImageDataForApi | null>(null);
@@ -148,6 +149,24 @@ const ButtonsActions = ({
                         )}
                     </div>
                 )}
+
+                  <Tooltip title="Escanear Documento">
+                            <IconButton
+                                onClick={() => scannedImageRef.current.click()}
+                                aria-label="delete"
+                                style={{ color: '#46c0b7' }}
+                            >
+                                <DocumentScannerIcon />
+                            </IconButton>
+                        </Tooltip>
+
+                        <VisuallyHiddenInput
+                            ref={scannedImageRef}
+                            type="file"
+                            accept="image/jpeg, image/png"
+                            capture={isMobileDevice ? 'environment' : undefined}
+                            onChange={(e) => handleImageChange(e, promptText)}
+                        />
                 <span>
                     {selectedFile ? `${selectedFile.name}` : null}
                 </span>
