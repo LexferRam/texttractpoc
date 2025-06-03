@@ -1,6 +1,6 @@
 'use client'
 import React, { useState, useCallback, ChangeEvent, useRef } from 'react';
-import { extractInfoFromImage } from '../services/geminiService';
+import axios from 'axios';
 import { LoadingSpinner } from '../_components/LoadingSpinner';
 import '../styles.css'
 import { IconButton, styled, Tooltip } from '@mui/material';
@@ -94,12 +94,13 @@ const ButtonsActions = ({
         setExtractedInfo(null);
 
         try {
-            const result: any = await extractInfoFromImage(
-                base64,
-                mimeType,
-                promptText
-            );
-            setExtractedInfo(result);
+            const result: any = await axios.post(`/api/analizeImage`, {
+                base64ImageData: base64,
+                mimeType: mimeType,
+                prompt: promptText
+            })
+            console.log(result)
+            setExtractedInfo(result?.data?.data);
         } catch (apiError: any) {
             setError(apiError.message || 'An unexpected error occurred.');
             console.error("API Error:", apiError);

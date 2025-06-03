@@ -1,10 +1,6 @@
 
-import { GoogleGenAI, GenerateContentResponse, Part } from "@google/genai";
+import { GoogleGenAI, GenerateContentResponse, Part, Type } from "@google/genai";
 
-// IMPORTANT: As per instructions, process.env.API_KEY is used directly.
-// This is highly insecure for a client-side application.
-// In a real-world scenario, this API key should be handled by a backend proxy.
-// The execution environment MUST provide process.env.API_KEY.
 const API_KEY = process.env.NEXT_PUBLIC_GEMINI;
 
 let ai: GoogleGenAI | null = null;
@@ -47,14 +43,82 @@ export const extractInfoFromImage = async (
     };
 
     // Using the specified model for multimodal capabilities
-    const model = 'gemini-2.5-flash-preview-04-17';
+    const model = 'gemini-2.5-flash-preview-05-20';
 
     const response: GenerateContentResponse = await ai.models.generateContent({
-        model: model,
-        contents: { parts: [imagePart, textPart] },
+      model: model,
+      //'gemini-2.5-flash-preview-05-20',// casi 100% pero es mas lento, con limites de frecuencia restrictivos de un modelo experimental o de versión preliminar experimental
+      //'gemini-2.5-pro-preview-05-06', // es un modelo preliminar. sin posibilidad de prueba en version gratuita
+      //'gemini-2.0-flash', // buena respuesta pero a veces no captura la version y da respuesta de invalido en ciertas pruebas
+      //'gemini-2.0-flash-lite', // ==> Un modelo Gemini 2.0 Flash optimizado para la rentabilidad y la baja latencia. (bastante buena la respuesta FUERTE CANDIDATO 1) generacion mas nueva
+      //'gemini-1.5-flash-latest', (bastante buena la respuesta FUERTE CANDIDATO 2)
+      //'gemini-1.5-flash-8b-latest', (a veces le cuesta el modelo (con errores) y casi siempre la version))
+      //'gemini-1.5-flash-8b', // (estable más reciente- a veces le cuesta el modelo y casi siempre la version)
+      // 'gemini-1.5-flash-8b-001' (Estable) ==> funciona bastante bien , a veces le cuesta el modelo y casi siempre la version
+      //'gemini-1.5-pro'(NO FUNCIONA),
+      //'gemini-2.0-flash-001'(funciona pero no reconoce cuando es CI invalida),
+      contents: { parts: [imagePart, textPart] },
+      config: {
+        responseMimeType: 'application/json', // Ensure the response is in JSON format
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            description: "Información extraída del vehículo o documento",
+            title: "Vehículo o Certificado Vehicular",
+            // Aquí se definen las propiedades esperadas en el JSON de respuesta
+            // Asegúrate de que coincidan con lo que esperas recibir
+            properties: {
+              anio: {
+                type: Type.STRING,
+                description: "Año del vehículo o documento",
+              },
+              marca: {
+                type: Type.STRING,
+                description: "Marca del vehículo o documento",
+              },
+              modelo: {
+                type: Type.STRING,
+                description: "Modelo del vehículo o documento",
+              },
+              placa: {
+                type: Type.STRING,
+                description: "Placa del vehículo o documento",
+              },
+              serialMotor: {
+                type: Type.STRING,
+                description: "Serial del motor del vehículo o documento",
+              },
+              serialCarroceria: {
+                type: Type.STRING,
+                description: "Serial de la carrocería del vehículo o documento",
+              },
+              color: {
+                type: Type.STRING,
+                description: "Color del vehículo o documento",
+              },
+              destinado: {
+                type: Type.STRING,
+                description: "Destinado del vehículo o documento",
+              },
+              grupo: {
+                type: Type.STRING,
+                description: "Grupo del vehículo o documento",
+              },
+              version: {
+                type: Type.STRING,
+                description: "Versión del vehículo o documento",
+              },
+            }
+          },
+        }
       }
+    }
     );
-    
+
+    console.log(`Thoughts tokens: ${response?.usageMetadata?.thoughtsTokenCount}`);
+    console.log(`Output tokens: ${response?.usageMetadata?.candidatesTokenCount}`);
+
     return response.text;
 
   } catch (error: any) {
@@ -63,22 +127,22 @@ export const extractInfoFromImage = async (
     // For now, rethrow a generic message or the error's message.
     let errorMessage = "An unknown error occurred while contacting the Gemini API.";
     if (error.message) {
-        errorMessage = `Gemini API Error: ${error.message}`;
+      errorMessage = `Gemini API Error: ${error.message}`;
     } else if (typeof error === 'string') {
-        errorMessage = error;
+      errorMessage = error;
     }
     // More detailed error parsing could be added here if the API returns structured errors consistently.
     // e.g., error.response?.data?.error?.message
-    
+
     // If the error object has details about safety ratings or blocks
     if (error.response && error.response.promptFeedback) {
-        const feedback = error.response.promptFeedback;
-        if (feedback.blockReason) {
-            errorMessage += ` Blocked due to: ${feedback.blockReason}.`;
-            if (feedback.safetyRatings && feedback.safetyRatings.length > 0) {
-                errorMessage += ` Categories: ${feedback.safetyRatings.map((r: any) => r.category).join(', ')}.`;
-            }
+      const feedback = error.response.promptFeedback;
+      if (feedback.blockReason) {
+        errorMessage += ` Blocked due to: ${feedback.blockReason}.`;
+        if (feedback.safetyRatings && feedback.safetyRatings.length > 0) {
+          errorMessage += ` Categories: ${feedback.safetyRatings.map((r: any) => r.category).join(', ')}.`;
         }
+      }
     }
     throw new Error(errorMessage);
   }
