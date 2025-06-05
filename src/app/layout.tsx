@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body style={{ height: "100vh" }}>
+      <body style={{ height: "100%" }}>
         {children}
       </body>
     </html>
