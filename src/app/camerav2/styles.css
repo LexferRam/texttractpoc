@@ -12,6 +12,7 @@
     color: gray;
     text-align: 'center';
     margin-right: 10px;
+    max-width: 240px ;
 }
 
 .imagePreview {

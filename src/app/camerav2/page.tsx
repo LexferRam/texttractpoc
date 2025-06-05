@@ -13,11 +13,11 @@ const App: React.FC = () => {
 
     return (
         <div className='mainContainer'>
-            <ButtonsActions
+            {/* <ButtonsActions
                 description="Cédula de Identidad o RIF:"
                 promptText={prompts['CI_RIF']}
             />
-            <hr />
+            <hr /> */}
             <ButtonsActions
                 description="Carnet de circulación o Título de propiedad"
                 promptText={prompts['CC_CV']}
