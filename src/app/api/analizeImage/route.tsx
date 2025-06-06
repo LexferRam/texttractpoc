@@ -12,7 +12,9 @@ export async function POST(request: NextRequest) {
     try {
         const response = await extractInfoFromImage(base64ImageData, mimeType, prompt);
         console.log('Gemini analized image response:, ', response)
-        return NextResponse.json({ data: response }, { status: 200 })
+        return NextResponse.json({ 
+            data: response?.length ? JSON.parse(response) : response
+        }, { status: 200 })
     } catch (error) {
         console.error("Error processing image:", error);
         return NextResponse.json({ error: "Error processing image" }, { status: 500 })
