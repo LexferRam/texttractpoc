@@ -69,7 +69,7 @@ null
 
   try {
     const response: GenerateContentResponse = await ai.models.generateContent({
-      model: 'gemini-2.5-flash-preview-05-20',
+      model: 'gemini-1.5-flash-latest',
       contents: prompt,
       config: {
         responseMimeType: "application/json",

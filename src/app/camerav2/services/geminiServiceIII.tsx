@@ -34,6 +34,7 @@ export const findBestMatch = async (
 
   const prompt = `
 You are an AI assistant specialized in data matching.
+Note: the vehicle list and the searchTerm are specifically from Venezuela, so maybe the searchTerm is not on the list even though it may be a coincidence.
 Your task is to find the single best matching vehicle model from the given list based on a search term.
 The list of vehicle models is provided as a JSON array of objects, where each object has 'VALOR' (a code) and 'DESCRIP' (a description) properties.
 The search term is a string that should be matched against the 'DESCRIP' property of the vehicle models.
