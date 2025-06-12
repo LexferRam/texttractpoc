@@ -32,41 +32,62 @@ export const findBestMatch = async (
     return null; // No models to search in
   }
 
-  const prompt = `
-You are an AI assistant specialized in data matching.
-Note: the vehicle list and the searchTerm are specifically from Venezuela, so maybe the searchTerm is not on the list even though it may be a coincidence.
-Your task is to find the single best matching vehicle model from the given list based on a search term.
-The list of vehicle models is provided as a JSON array of objects, where each object has 'VALOR' (a code) and 'DESCRIP' (a description) properties.
-The search term is a string that should be matched against the 'DESCRIP' property of the vehicle models.
+  const prompt = `You are an AI assistant specialized in precise data matching for vehicle information from Venezuelan circulation permits and property titles.
 
-Analyze the following list of vehicle models:
-${JSON.stringify(vehicleModels, null, 2)}
+Your primary goal is to identify the single best matching vehicle model from a provided list based on a given search term.
 
-Find the best match for the search term: "${searchTerm}"
+**Crucial Considerations for Venezuelan Vehicle Data:**
+* **Venezuelan Specificity:** Both the vehicle model list and the search term originate from Venezuelan documents. Be aware of common local variations, misspellings, or specific model designations used in Venezuela.
+* **Prioritize Exact and Close Matches:** Favor exact matches first, then highly similar partial matches.
+* **Semantic Understanding:** Understand that "Corolla" is related to "Toyota Corolla," and "Meru" refers to "Land Cruiser Meru."
+* **Common Abbreviations/Nicknames:** Account for widespread abbreviations or nicknames used for vehicle models in Venezuela (e.g., "Machito" for certain Land Cruiser models, "Fortuner" for "Toyota Fortuner").
+* **Word Order Flexibility:** The order of words in the search term or description might vary (e.g., "Toyota Corolla" vs. "Corolla Toyota").
+* **Robustness to OCR Errors:** Assume the \`searchTerm\` might have minor imperfections due to optical character recognition (OCR) from scanned documents (e.g., "LAND CRUSER PRADO" instead of "LAND CRUISER PRADO").
 
-Consider semantic similarity, partial matches, and common abbreviations.
-Return ONLY a single JSON object representing the best matching vehicle model from the provided list. 
-The object MUST have the exact 'VALOR' and 'DESCRIP' properties as found in the input list.
-The VALOR property must be a string.
+**Input:**
+1.  **\`vehicleModels\`**: A JSON array of objects. Each object represents a vehicle model with two properties:
+    * \`"VALOR"\`: A unique string code for the model.
+    * \`"DESCRIP"\`: A string description of the vehicle model.
 
-If no reasonable match is found in the list, return null.
-Do not add any explanations, introductory text, or concluding remarks. Only the JSON object or null.
+    Example \`vehicleModels\` structure:
+    \${JSON.stringify(vehicleModels, null, 2)}
 
-Example Input:
+2.  **\`searchTerm\`**: A string representing the vehicle model extracted from a Venezuelan document.
+
+    Example \`searchTerm\`: "\${searchTerm}"
+
+**Task:**
+1.  **Normalize:** Before matching, convert both \`searchTerm\` and all \`DESCRIP\` values in \`vehicleModels\` to uppercase and remove extra spaces to ensure consistent comparisons.
+2.  **Prioritized Matching Strategy:**
+    * **Phase 1: Exact Match:** Look for an exact, case-insensitive match of the \`searchTerm\` within any \`DESCRIP\`.
+    * **Phase 2: Full Substring Match (Case-Insensitive):** Check if the \`searchTerm\` (or a significant part of it) is a direct substring of any \`DESCRIP\`, or vice-versa.
+    * **Phase 3: Keyword/Semantic Match:** Identify if key words from the \`searchTerm\` are present in a \`DESCRIP\`, even if not a direct substring. Consider common Venezuelan model names or abbreviations.
+    * **Phase 4: Levenshtein Distance/Fuzzy Matching:** For the closest remaining candidates, calculate a similarity score (e.g., Levenshtein distance or Jaro-Winkler) to find the best fuzzy match, especially useful for minor OCR errors or slight variations.
+3.  **Selection Criteria:**
+    * If multiple models achieve the same "best" match score, prefer the one with the shortest \`DESCRIP\` that contains the most relevant keywords from the \`searchTerm\`, or the one that is most frequently associated with the \`searchTerm\` in general Venezuelan vehicle contexts (if such knowledge can be inferred). In most cases, a single best match should be identifiable.
+
+**Output:**
+Return **ONLY** a single JSON object representing the best matching vehicle model from the provided list.
+The object **MUST** have the exact \`"VALOR"\` and \`"DESCRIP"\` properties as they appear in the original input list (do not modify them in the output).
+The \`"VALOR"\` property **MUST** be a string.
+
+If, after thorough analysis, no reasonable or confident match is found in the list, return \`null\`.
+
+**Do not add any explanations, introductory text, or concluding remarks. Only the JSON object or \`null\`.
+
+**Example Input:**
 Vehicle Models:
+\`\`\`json
 [
   { "VALOR": "001", "DESCRIP": "LAND CRUISER PRADO" },
   { "VALOR": "002", "DESCRIP": "TOYOTA COROLLA" },
-  { "VALOR": "004", "DESCRIP": "LAND CRUISER MERU" }
-]
-Search Term: "MERU"
-
-Example Output (ensure VALOR is a string):
-{ "VALOR": "004", "DESCRIP": "LAND CRUISER MERU" }
-
-If search term is "Ford Ranger" and it's not in the list, output should be:
-null
-`;
+  { "VALOR": "003", "DESCRIP": "CHEVROLET AVEO" },
+  { "VALOR": "004", "DESCRIP": "LAND CRUISER MERU" },
+  { "VALOR": "005", "DESCRIP": "FORD RANGER" },
+  { "VALOR": "006", "DESCRIP": "TOYOTA HILUX" },
+  { "VALOR": "007", "DESCRIP": "TOYOTA FORTUNER" },
+  { "VALOR": "008", "DESCRIP": "CHEVROLET SILVERADO" }
+]\`\`\``;
 
   try {
     const response: GenerateContentResponse = await ai.models.generateContent({
