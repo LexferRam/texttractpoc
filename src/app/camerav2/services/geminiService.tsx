@@ -71,43 +71,43 @@ export const extractInfoFromImage = async (
             properties: {
               anio: {
                 type: Type.STRING,
-                description: "Año del vehículo o documento",
+                description: "Año del vehículo o documento, retorna string vacio",
               },
               marca: {
                 type: Type.STRING,
-                description: "Marca del vehículo o documento",
+                description: "Marca del vehículo o documento, retorna string vacio",
               },
               modelo: {
                 type: Type.STRING,
-                description: "Modelo del vehículo o documento",
+                description: "Modelo del vehículo o documento, retorna string vacio",
               },
               placa: {
                 type: Type.STRING,
-                description: "Placa del vehículo o documento",
+                description: "Placa del vehículo o documento, retorna string vacio",
               },
               serialMotor: {
                 type: Type.STRING,
-                description: "Serial del motor del vehículo o documento",
+                description: "Serial del motor del vehículo o documento, retorna string vacio",
               },
               serialCarroceria: {
                 type: Type.STRING,
-                description: "Serial de la carrocería del vehículo o documento",
+                description: "Serial de la carrocería del vehículo o documento, retorna string vacio",
               },
               color: {
                 type: Type.STRING,
-                description: "Color del vehículo o documento",
+                description: "Color del vehículo o documento, retorna string vacio",
               },
               destinado: {
                 type: Type.STRING,
-                description: "Destinado del vehículo o documento",
+                description: "Destinado del vehículo o documento, retorna string vacio",
               },
               grupo: {
                 type: Type.STRING,
-                description: "Grupo del vehículo o documento",
+                description: "Grupo del vehículo o documento, retorna string vacio",
               },
               version: {
                 type: Type.STRING,
-                description: "Versión del vehículo o documento",
+                description: "Versión del vehículo o documento, retorna string vacio",
               },
             }
           },
