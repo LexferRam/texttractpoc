@@ -125,7 +125,7 @@ export const extractInfoFromImage = async (
               },
               serialMotor: {
                 type: Type.STRING,
-                description: "Serial del motor del vehículo o documento, retorna string vacio si no captura valor",
+                description: "Serial del motor del vehículo o documento, buscar solo en caso de que el documento sea un título de propiedad, retorna string vacio si no captura valor o es un carnet de circulación",
               },
               serialCarroceria: {
                 type: Type.STRING,
