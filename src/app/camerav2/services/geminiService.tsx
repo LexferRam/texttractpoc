@@ -147,6 +147,10 @@ export const extractInfoFromImage = async (
                 type: Type.STRING,
                 description: "Versión del vehículo o documento, retorna string vacio si no captura valor",
               },
+              documentValid: {
+                type: Type.BOOLEAN,
+                description: "Retorna true si es un documento válido (CI o RIF) y false si no lo es "
+              },
             }
           },
         }
