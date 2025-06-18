@@ -149,7 +149,7 @@ export const extractInfoFromImage = async (
               },
               documentValid: {
                 type: Type.BOOLEAN,
-                description: "Retorna true si es un documento válido (CI o RIF) y false si no lo es "
+                description: "Retorna true si es un documento válido (Carnet de circulación ó título de propiedad) y false si no lo es "
               },
             }
           },
