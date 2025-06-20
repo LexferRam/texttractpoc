@@ -35,7 +35,7 @@ If no brand is a reasonably good match, respond with "NONE".
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-lite',
+      model: 'gemini-2.5-flash-lite-preview-06-17',//'gemini-2.0-flash-lite',
       contents: prompt,
     });
     
