@@ -3,6 +3,15 @@ import { NextRequest, NextResponse } from "next/server"
 import { extractInfoFromImage } from "../../camerav2/services/geminiService";
 import { findBestMatchingBrand } from "@/app/camerav2/services/geminiServiceII";
 
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb' // Set desired limit (e.g., 10MB)
+    }
+  }
+}
+
 export async function POST(request: NextRequest) {
 
     const { arrayBrands, searchTerm } = await request.json()

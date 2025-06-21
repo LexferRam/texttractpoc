@@ -2,6 +2,15 @@ export const maxDuration = 60;
 import { findBestMatch } from "@/app/camerav2/services/geminiServiceIII";
 import { NextRequest, NextResponse } from "next/server"
 
+
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb' // Set desired limit (e.g., 10MB)
+    }
+  }
+}
+
 export async function POST(request: NextRequest) {
 
     const { arrayModels, searchTerm } = await request.json()
